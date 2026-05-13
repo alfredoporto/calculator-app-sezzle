@@ -13,6 +13,7 @@ backend/coverage.out
 *.test
 
 # Node/Vite
+/package-lock.json
 frontend/node_modules/
 frontend/dist/
 frontend/coverage/

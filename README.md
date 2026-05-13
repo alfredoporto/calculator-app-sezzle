@@ -60,6 +60,16 @@ cd frontend
 npm test -- --coverage
 ```
 
+This project was implemented with a test-first workflow: calculator service tests,
+handler tests, API client tests, and UI behavior tests were written before the
+corresponding production code.
+
+Current local coverage at completion:
+
+- Backend calculator package: 88.1%
+- Backend API package: 88.6%
+- Frontend statements: 92.85%
+
 ## API
 
 Health check:
@@ -122,3 +132,9 @@ docker run --rm -p 8080:8080 sezzle-calculator
 
 Then open `http://localhost:8080`.
 
+## Notes
+
+- The backend has no database or external service dependencies.
+- The API intentionally returns stable error codes instead of raw internal errors.
+- This application uses `float64`; financial-grade decimal math is out of scope
+  for a general calculator assessment.
