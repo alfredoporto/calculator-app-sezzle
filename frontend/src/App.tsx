@@ -20,6 +20,10 @@ export default function App() {
     }
   }
 
+  function clearResult() {
+    setResult(null);
+  }
+
   return (
     <main className="app-shell">
       <section className="calculator-layout" aria-labelledby="app-title">
@@ -33,11 +37,14 @@ export default function App() {
         </div>
 
         <div className="workspace">
-          <CalculatorForm onResult={handleResult} onError={handleError} />
+          <CalculatorForm
+            onResult={handleResult}
+            onError={handleError}
+            onClearResult={clearResult}
+          />
           <ResultCard result={result} error={error} />
         </div>
       </section>
     </main>
   );
 }
-

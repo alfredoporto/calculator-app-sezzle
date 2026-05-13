@@ -31,7 +31,7 @@ describe('CalculatorForm', () => {
 
     expect(
       screen.getAllByText(/enter a valid number for the first operand/i)
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     expect(calculateMock).not.toHaveBeenCalled();
   });
 
@@ -59,7 +59,7 @@ describe('CalculatorForm', () => {
     expect(screen.queryByText('12')).not.toBeInTheDocument();
     expect(
       screen.getAllByText(/enter a valid number for the first operand/i)
-    ).toHaveLength(2);
+    ).toHaveLength(1);
   });
 
   it('submits a calculation and displays the result', async () => {

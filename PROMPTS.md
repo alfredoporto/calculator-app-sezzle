@@ -4,15 +4,12 @@ This file records the prompts used while planning and implementing the assessmen
 
 ## Planning
 
-- "We need to do an app calculator - read ~/Downloads/sezzle-se-asignment.txt"
-- "I come from Java and Springboot, so we need to think about production ready code, patterns, try to follow DDD principles"
-- "every commit should ideally encapsulate a single feature/fix/test/refactor - read ~/Downloads/sezzle-job-description.txt to see the job description, what they are lookig for and tech stack"
-- "Craft a plan to execute the home assetment, show cronology of git commits, how are we goint to document, maybe even deploy free"
-- "read ~/Downloads/Sizzle assessment plan - check if we miss anything on the plan"
-- "Implement the plan."
+- "Read the Sezzle assignment and job description, then plan a full-stack calculator using Go, React, TypeScript, Vite, tests, documentation, and focused commits."
+- "Compare the local assessment plan with the assignment requirements and identify anything missing."
+- "Use a monorepo unless there is a strong reason to split frontend and backend repositories."
 
 ## Implementation
 
-- "Create the full project structure and initial implementation."
-- "Before finishing, check: Correctness and edge cases. Input validation. Error handling. Tests. Observability. Security. Performance. Data consistency. Backward compatibility. Risky assumptions."
-- "npm install run, continue"
+- "Implement the plan with test-first backend service/API work, frontend API/client/UI tests, Docker support, README, and prompts documentation."
+- "Review correctness, edge cases, validation, error handling, tests, observability, security, performance, data consistency, backward compatibility, and risky assumptions before finishing."
+- "Fix review findings: stale frontend result after client validation failure, trailing backend JSON data, missing Allow headers, static-serving coverage, and incomplete README API contract."

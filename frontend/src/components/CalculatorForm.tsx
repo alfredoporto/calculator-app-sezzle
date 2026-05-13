@@ -25,9 +25,14 @@ const operations: OperationOption[] = [
 type CalculatorFormProps = {
   onResult: (response: CalculationResponse) => void;
   onError: (message: string) => void;
+  onClearResult: () => void;
 };
 
-export function CalculatorForm({ onResult, onError }: CalculatorFormProps) {
+export function CalculatorForm({
+  onResult,
+  onError,
+  onClearResult
+}: CalculatorFormProps) {
   const [operation, setOperation] = useState<Operation>('add');
   const [firstOperand, setFirstOperand] = useState('0');
   const [secondOperand, setSecondOperand] = useState('0');
@@ -49,7 +54,7 @@ export function CalculatorForm({ onResult, onError }: CalculatorFormProps) {
     if (parsedFirst === null) {
       const message = 'Enter a valid number for the first operand.';
       setValidationError(message);
-      onError(message);
+      onClearResult();
       return;
     }
 
@@ -59,7 +64,7 @@ export function CalculatorForm({ onResult, onError }: CalculatorFormProps) {
       if (parsedSecond === null) {
         const message = 'Enter a valid number for the second operand.';
         setValidationError(message);
-        onError(message);
+        onClearResult();
         return;
       }
       operands.push(parsedSecond);
