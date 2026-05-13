@@ -1,0 +1,23 @@
+.DS_Store
+
+# Local agent/tooling artifacts
+codex_agent_pack/
+.agents/
+AGENTS.md
+AGENT.md
+
+# Go
+backend/bin/
+backend/coverage.out
+*.test
+
+# Node/Vite
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+
+# Logs and env
+*.log
+.env
+.env.*
+
