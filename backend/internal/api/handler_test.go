@@ -79,6 +79,12 @@ func TestHandlerCalculateValidationErrors(t *testing.T) {
 			wantCode:   "INVALID_JSON",
 		},
 		{
+			name:       "trailing data",
+			body:       `{"operation":"add","operands":[1,2]} garbage`,
+			wantStatus: http.StatusBadRequest,
+			wantCode:   "INVALID_JSON",
+		},
+		{
 			name:       "invalid operation",
 			body:       `{"operation":"mod","operands":[10,2]}`,
 			wantStatus: http.StatusBadRequest,
