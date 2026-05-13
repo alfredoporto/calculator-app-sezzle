@@ -30,9 +30,36 @@ describe('CalculatorForm', () => {
     await user.click(screen.getByRole('button', { name: /calculate/i }));
 
     expect(
-      screen.getByText(/enter a valid number for the first operand/i)
-    ).toBeInTheDocument();
+      screen.getAllByText(/enter a valid number for the first operand/i)
+    ).toHaveLength(2);
     expect(calculateMock).not.toHaveBeenCalled();
+  });
+
+  it('clears a previous result after client-side validation fails', async () => {
+    const user = userEvent.setup();
+    calculateMock.mockResolvedValue({
+      operation: 'add',
+      operands: [10, 2],
+      result: 12
+    });
+
+    render(<App />);
+
+    await user.clear(screen.getByLabelText(/first operand/i));
+    await user.type(screen.getByLabelText(/first operand/i), '10');
+    await user.clear(screen.getByLabelText(/second operand/i));
+    await user.type(screen.getByLabelText(/second operand/i), '2');
+    await user.click(screen.getByRole('button', { name: /calculate/i }));
+
+    expect(await screen.findByText('12')).toBeInTheDocument();
+
+    await user.clear(screen.getByLabelText(/first operand/i));
+    await user.click(screen.getByRole('button', { name: /calculate/i }));
+
+    expect(screen.queryByText('12')).not.toBeInTheDocument();
+    expect(
+      screen.getAllByText(/enter a valid number for the first operand/i)
+    ).toHaveLength(2);
   });
 
   it('submits a calculation and displays the result', async () => {
@@ -76,4 +103,3 @@ describe('CalculatorForm', () => {
     });
   });
 });
-

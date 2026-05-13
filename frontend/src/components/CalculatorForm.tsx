@@ -47,7 +47,9 @@ export function CalculatorForm({ onResult, onError }: CalculatorFormProps) {
 
     const parsedFirst = parseOperand(firstOperand);
     if (parsedFirst === null) {
-      setValidationError('Enter a valid number for the first operand.');
+      const message = 'Enter a valid number for the first operand.';
+      setValidationError(message);
+      onError(message);
       return;
     }
 
@@ -55,7 +57,9 @@ export function CalculatorForm({ onResult, onError }: CalculatorFormProps) {
     if (needsSecondOperand) {
       const parsedSecond = parseOperand(secondOperand);
       if (parsedSecond === null) {
-        setValidationError('Enter a valid number for the second operand.');
+        const message = 'Enter a valid number for the second operand.';
+        setValidationError(message);
+        onError(message);
         return;
       }
       operands.push(parsedSecond);
@@ -144,4 +148,3 @@ function toUserMessage(error: unknown): string {
 
   return 'Calculation failed.';
 }
-
