@@ -3,10 +3,12 @@ package main
 import (
 	"context"
 	"errors"
+	"io/fs"
 	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -20,10 +22,14 @@ func main() {
 
 	addr := getenv("HTTP_ADDR", ":8080")
 	handler := api.NewHandler(calculator.NewService())
+	var httpHandler http.Handler = handler
+	if frontendDist := os.Getenv("FRONTEND_DIST"); frontendDist != "" {
+		httpHandler = withFrontend(handler, os.DirFS(frontendDist))
+	}
 
 	server := &http.Server{
 		Addr:              addr,
-		Handler:           handler,
+		Handler:           httpHandler,
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       10 * time.Second,
 		WriteTimeout:      10 * time.Second,
@@ -63,4 +69,34 @@ func getenv(key string, fallback string) string {
 	}
 
 	return value
+}
+
+func withFrontend(apiHandler http.Handler, frontend fs.FS) http.Handler {
+	mux := http.NewServeMux()
+	mux.Handle("/api/", apiHandler)
+	mux.Handle("/healthz", apiHandler)
+	mux.Handle("/", spaHandler(frontend))
+
+	return mux
+}
+
+func spaHandler(frontend fs.FS) http.Handler {
+	fileServer := http.FileServer(http.FS(frontend))
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := filepath.Clean(r.URL.Path)
+		if path == "." || path == "/" {
+			r.URL.Path = "/"
+			fileServer.ServeHTTP(w, r)
+			return
+		}
+
+		if _, err := fs.Stat(frontend, path[1:]); err == nil {
+			fileServer.ServeHTTP(w, r)
+			return
+		}
+
+		r.URL.Path = "/"
+		fileServer.ServeHTTP(w, r)
+	})
 }
