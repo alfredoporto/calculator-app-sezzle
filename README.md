@@ -78,6 +78,18 @@ Health check:
 curl http://localhost:8080/healthz
 ```
 
+Supported operations:
+
+| Operation | Operand count | Description |
+| --- | ---: | --- |
+| `add` | 2 | Adds two numbers |
+| `subtract` | 2 | Subtracts the second number from the first |
+| `multiply` | 2 | Multiplies two numbers |
+| `divide` | 2 | Divides the first number by the second |
+| `power` | 2 | Raises the first number to the second |
+| `sqrt` | 1 | Returns the square root of one number |
+| `percentage` | 1 | Converts one number to a percentage value by dividing by 100 |
+
 Calculate:
 
 ```sh
@@ -106,6 +118,17 @@ Error response:
   }
 }
 ```
+
+Stable error codes:
+
+- `INVALID_JSON`
+- `INVALID_OPERATION`
+- `INVALID_OPERANDS`
+- `DIVISION_BY_ZERO`
+- `NON_FINITE_RESULT`
+- `METHOD_NOT_ALLOWED`
+- `NOT_FOUND`
+- `INTERNAL_ERROR`
 
 ## Design Decisions
 

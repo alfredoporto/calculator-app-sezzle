@@ -142,9 +142,10 @@ func TestHandlerMethodAndRouteHandling(t *testing.T) {
 		method     string
 		path       string
 		wantStatus int
+		wantAllow  string
 	}{
-		{name: "calculation get not allowed", method: http.MethodGet, path: "/api/v1/calculations", wantStatus: http.StatusMethodNotAllowed},
-		{name: "health post not allowed", method: http.MethodPost, path: "/healthz", wantStatus: http.StatusMethodNotAllowed},
+		{name: "calculation get not allowed", method: http.MethodGet, path: "/api/v1/calculations", wantStatus: http.StatusMethodNotAllowed, wantAllow: http.MethodPost},
+		{name: "health post not allowed", method: http.MethodPost, path: "/healthz", wantStatus: http.StatusMethodNotAllowed, wantAllow: http.MethodGet},
 		{name: "unknown route", method: http.MethodGet, path: "/missing", wantStatus: http.StatusNotFound},
 	}
 
@@ -161,6 +162,9 @@ func TestHandlerMethodAndRouteHandling(t *testing.T) {
 
 			if response.Code != tt.wantStatus {
 				t.Fatalf("status = %d, want %d", response.Code, tt.wantStatus)
+			}
+			if got := response.Header().Get("Allow"); got != tt.wantAllow {
+				t.Fatalf("Allow header = %q, want %q", got, tt.wantAllow)
 			}
 		})
 	}
