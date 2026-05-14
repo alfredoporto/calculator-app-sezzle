@@ -73,6 +73,8 @@ npm test -- --coverage
 npm run build
 ```
 
+Coverage summary: [`docs/coverage.md`](docs/coverage.md).
+
 Docker build:
 
 ```sh
