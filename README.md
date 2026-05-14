@@ -89,6 +89,8 @@ Then open `http://localhost:8080`.
 
 ## API Examples
 
+API docs are available in [`docs/openapi.yaml`](docs/openapi.yaml).
+
 Health check:
 
 ```sh

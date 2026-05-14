@@ -1,0 +1,153 @@
+openapi: 3.0.3
+info:
+  title: Sezzle Calculator API
+  version: 1.0.0
+  description: REST API for calculator operations.
+servers:
+  - url: http://localhost:8080
+paths:
+  /healthz:
+    get:
+      summary: Health check
+      responses:
+        "200":
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                properties:
+                  status:
+                    type: string
+                    example: ok
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+  /api/v1/calculations:
+    post:
+      summary: Run a calculator operation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CalculationRequest"
+            examples:
+              divide:
+                summary: Divide 10 by 2
+                value:
+                  operation: divide
+                  operands:
+                    - 10
+                    - 2
+      responses:
+        "200":
+          description: Calculation succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CalculationResponse"
+              examples:
+                success:
+                  value:
+                    operation: divide
+                    operands:
+                      - 10
+                      - 2
+                    result: 5
+        "400":
+          description: Invalid request or calculator input.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                divisionByZero:
+                  value:
+                    error:
+                      code: DIVISION_BY_ZERO
+                      message: division by zero
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+components:
+  responses:
+    MethodNotAllowed:
+      description: HTTP method is not supported for this route.
+      headers:
+        Allow:
+          schema:
+            type: string
+          description: Supported HTTP method for the route.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    Operation:
+      type: string
+      enum:
+        - add
+        - subtract
+        - multiply
+        - divide
+        - power
+        - sqrt
+        - percentage
+    CalculationRequest:
+      type: object
+      required:
+        - operation
+        - operands
+      properties:
+        operation:
+          $ref: "#/components/schemas/Operation"
+        operands:
+          type: array
+          items:
+            type: number
+            format: double
+          minItems: 1
+          maxItems: 2
+          description: Unary operations use one operand; binary operations use two.
+    CalculationResponse:
+      type: object
+      required:
+        - operation
+        - operands
+        - result
+      properties:
+        operation:
+          $ref: "#/components/schemas/Operation"
+        operands:
+          type: array
+          items:
+            type: number
+            format: double
+        result:
+          type: number
+          format: double
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_JSON
+                - INVALID_OPERATION
+                - INVALID_OPERANDS
+                - DIVISION_BY_ZERO
+                - NON_FINITE_RESULT
+                - METHOD_NOT_ALLOWED
+                - NOT_FOUND
+                - INTERNAL_ERROR
+            message:
+              type: string
