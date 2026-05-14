@@ -11,6 +11,10 @@ Supported operations:
 - Addition, subtraction, multiplication, division
 - Exponentiation, square root, percentage
 
+## Screenshot
+
+![Calculator UI](docs/screenshots/calculator-ui.png)
+
 ## Tech Stack
 
 - Frontend: React, TypeScript, Vite, Vitest, React Testing Library
